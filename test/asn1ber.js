@@ -243,6 +243,15 @@ describe('asn1ber', function () {
                 done();
             }
         });
+        it('encodes NULL oid (0,0) correctly if skipping validation', function() {
+            var buf = asn1ber.encodeOid([0,0], true);
+            var correct = '06 01 00'.replace(/ /g, '');
+            assert.equal(correct, buf.toString('hex'));
+        });
+        it('encodes empty OID if skipping validation', function () {
+            var expected = asn1ber.encodeOid([0,0], true);
+            assert.equal(expected.toString('hex'), asn1ber.encodeOid([], true).toString('hex'));
+        });
         it('throws an exception for incorrect SNMP OIDs', function (done) {
             try {
                 asn1ber.encodeOid([1, 5, 6, 7, 8]);

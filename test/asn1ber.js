@@ -375,6 +375,13 @@ describe('asn1ber', function () {
             var oid = asn1ber.parseOid(buf);
             assert.deepEqual(correct, oid);
         });
+        it('correctly parses an oid with a potentially ambiguous first byte', function () {
+            // commonly incorrectly interpreted as 3,6,...
+            var correct = [2,46,1,4,1,11,2,3,9,1,2];
+            var buf = new Buffer('06 0a 7E 01 04 01 0B 02 03 09 01 02'.replace(/ /g, ''), 'hex');
+            var oid = asn1ber.parseOid(buf);
+            assert.deepEqual(correct, oid);
+        });
     });
 
     describe('parseArray()', function () {
